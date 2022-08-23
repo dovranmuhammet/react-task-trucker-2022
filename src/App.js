@@ -4,6 +4,7 @@ import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
 
 function App() {
+  const [showAddTask, setShowAddTask] = useState(true)
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -24,6 +25,14 @@ function App() {
       reminder: false,
     },
   ])
+
+  //Add Task
+  const addTask = (task) => {
+    // console.log(task)
+    const id = Math.floor(Math.random() * 10000) + 1
+    const newTask = { id, ...task }
+    setTasks({ ...tasks, newTask })
+  }
 
   //Delete Task
   const deleteTask = (id) => {
@@ -46,7 +55,12 @@ function App() {
     <div className='container'>
       <h1>Hello from React</h1>
       <h3>Dovran, {greeting ? 'Salam' : 'Sagbol'}</h3>
-      <Header title='Task Trucker' />
+      <Header
+        title='Task Trucker'
+        onAdd={() => setShowAddTask(!showAddTask)}
+        showAdd={showAddTask}
+      />
+      {showAddTask && <AddTask onAdd={addTask} />}
 
       {tasks.length > 0 ? (
         <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
